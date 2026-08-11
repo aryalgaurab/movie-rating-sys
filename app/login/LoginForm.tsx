@@ -33,13 +33,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto my-12 bg-white border border-stone-200/80 rounded-2xl p-8 shadow-sm">
-      <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-stone-900">Welcome Back</h1>
-        <p className="text-xs text-stone-500 mt-1">Log in to manage movies or write reviews</p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
@@ -76,6 +70,4 @@ export default function LoginForm() {
           {isPending ? "Signing in..." : "Sign In"}
         </button>
       </form>
-    </div>
-  );
-}
+  )}
