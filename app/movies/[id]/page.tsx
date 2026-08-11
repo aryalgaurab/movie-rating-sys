@@ -28,7 +28,7 @@ export default async function MovieDetailPage({ params }: Props) {
   const totalReviews = movie.reviews.length;
   const avgRating =
     totalReviews > 0
-      ? movie.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+      ? movie.reviews.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) / totalReviews
       : null;
 
   return (
@@ -119,7 +119,7 @@ export default async function MovieDetailPage({ params }: Props) {
         {movie.reviews.length === 0 ? (
           <p className="text-xs text-stone-400">Be the first to leave a review for this movie!</p>
         ) : (
-          movie.reviews.map((rev) => (
+          movie.reviews.map((rev: { id: string; user: { name: string }; rating: number; comment: string }) => (
             <div key={rev.id} className="bg-white border border-stone-200/80 p-5 rounded-xl shadow-sm space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-stone-800">{rev.user.name}</span>

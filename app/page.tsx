@@ -27,7 +27,7 @@ export default async function HomePage() {
           const reviewCount = movie.reviews.length;
           const avgRating =
             reviewCount > 0
-              ? movie.reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount
+              ? movie.reviews.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) / reviewCount
               : null;
 
           return (
