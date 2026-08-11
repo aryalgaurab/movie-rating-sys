@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import MovieCard from "../app/components/MovieCard";
 
 export const revalidate = 0;
