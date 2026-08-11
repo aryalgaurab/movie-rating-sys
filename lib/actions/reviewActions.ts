@@ -13,7 +13,7 @@ export async function submitReview(formData: FormData) {
   }
    const rawData = {
         movieId : formData.get("movieId") as string,
-        ratingStr : formData.get("rating") as string,
+        rating : formData.get("rating") as string,
         comment : formData.get("comment") as string,
     }
 
