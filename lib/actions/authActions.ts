@@ -6,62 +6,69 @@ import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import { registerSchema } from "../validations";
 
-export async function registerAction (formdata : FormData) {
-    const rawData = {
-         name : formdata.get("name") as string,
-         email : formdata.get("email") as string,
-         password : formdata.get("password") as string,
-    }
+type AuthResult =
+  | { success: true }
+  | { success: false; message: string };
 
-    const result = registerSchema.safeParse(rawData);
+export async function registerAction(formdata: FormData): Promise<AuthResult> {
+  const rawData = {
+    name: formdata.get("name") as string,
+    email: formdata.get("email") as string,
+    password: formdata.get("password") as string,
+  };
 
-    if(!result.success) throw new Error(result.error.issues[0].message);
-    
+  const result = registerSchema.safeParse(rawData);
 
-    const {name, email, password} = result.data;
+  if (!result.success) {
+    return { success: false, message: result.error.issues[0].message };
+  }
 
-    const existingUser = await prisma.user.findUnique({
-        where: {email},
-    })
+  const { name, email, password } = result.data;
 
-    if(existingUser) throw new Error("User already exists.");
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
 
-    const newUser = await prisma.user.create({
-        data:{
-            name,
-            email,
-            password:hashedPassword,
-        }
-    })
+  if (existingUser) {
+    return { success: false, message: "User already exists." };
+  }
 
-    redirect("/login")
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await prisma.user.create({
+    data: {
+      name,
+      email,
+      password: hashedPassword,
+    },
+  });
+
+  return { success: true };
 }
 
+export async function loginAction(formData: FormData): Promise<AuthResult> {
+  const email = (formData.get("email") as string) ?? "";
+  const password = (formData.get("password") as string) ?? "";
 
-export async function loginAction(formData :FormData) {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+  if (!email || !password) {
+    return { success: false, message: "Email and password are required." };
+  }
 
-    if(!email || !password) {
-        throw new Error("Email and password are required.");
-    }
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
 
-    const user = await prisma.user.findUnique({
-        where: {email},
-    })
+  if (!user || !user.password) {
+    return { success: false, message: "Invalid email or password." };
+  }
 
-    if(!user || !user.password) {
-        throw new Error ("Invalid Credentials");
-    }
+  const isValidPassword = await bcrypt.compare(password, user.password);
+  if (!isValidPassword) {
+    return { success: false, message: "Invalid email or password." };
+  }
 
-    const isValidPassword = await bcrypt.compare(password, user.password)
-    if(!isValidPassword) throw new Error("Invalid credentials")
-
-    await setSessionUser(user.id);
-
-    redirect("/");
+  await setSessionUser(user.id);
+  return { success: true };
 }
 
 export async function logoutAction() {

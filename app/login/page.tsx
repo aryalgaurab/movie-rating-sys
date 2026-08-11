@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { loginAction } from "@/lib/actions/authActions";
+import LoginForm from "./LoginForm";
 
 export default function LoginPage() {
   return (
@@ -9,7 +9,7 @@ export default function LoginPage() {
         <p className="text-xs text-stone-500 mt-1">Log in to manage movies or write reviews</p>
       </div>
 
-      <form action={loginAction} className="space-y-4">
+      <LoginForm />
         <div>
           <label className="block text-xs font-semibold text-stone-700 mb-1">Email Address</label>
           <input
