@@ -42,3 +42,5 @@ next-env.d.ts
 zreq.txt
 /app/generated/prisma
 /app/generated/
+
+.vercel
