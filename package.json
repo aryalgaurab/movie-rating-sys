@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "postinstall": "prisma generate",
+    "prebuild": "prisma generate",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate" 
+    "seed": "tsx prisma/seed.ts"
 
   },
   "dependencies": {
