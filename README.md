@@ -4,6 +4,9 @@ A lightweight movie review app built with Next.js 16, Prisma 7, PostgreSQL, and 
 
 Users can browse movies, read ratings, and submit reviews. Admin users can add new movies through a simple dashboard.
 
+🚀 Live Site
+ https://movie-rating-sys.vercel.app/
+
 ## Features
 
 - Movie gallery with average rating and review count
